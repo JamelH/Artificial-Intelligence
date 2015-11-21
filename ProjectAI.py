@@ -2,6 +2,8 @@ import sys
 import os
 
 
+#starter
+
 #create your player
 class health:
     def __init__(self, name):
@@ -16,6 +18,7 @@ class health:
 #Global names
 global character
 character = health("")
+global someName
 
 
 a = {"Look":1, "Buy Food":2, "Buy Armor": 3}
