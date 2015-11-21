@@ -1,7 +1,6 @@
 import sys
 import os
 
-
 #starter
 
 #create your player
@@ -18,7 +17,6 @@ class health:
 #Global names
 global character
 character = health("")
-global someName
 
 
 a = {"Look":1, "Buy Food":2, "Buy Armor": 3}
@@ -33,7 +31,15 @@ i = {"Look":9}
 
 
 
-gridSystem = {"Store":a,"House":b, "C":c, "Cave":d, "Five":e, "Six": f, "Seven":g, "Eight":h, "Nine":i}
+gridSystem = {"Store":a,
+			"House":b, 
+			"C":c, 
+			"Cave":d, 
+			"Five":e, 
+			"Six": f, 
+			"Seven":g, 
+			"Eight":h, 
+			"Nine":i}
 
 
 
@@ -121,13 +127,13 @@ def cave():
 
 #print rooms in gridsystem
 def room_Gridsystem():
-    list = []
-    for keys, values in gridSystem.items():
+    for keys in gridSystem.keys():
+        print keys,
 
 
-room_Gridsystem()
-
-
+#view list of actions in a room
+def view_Actions():
+    pass
 
 
 #Play the game
@@ -142,8 +148,9 @@ def action():
             print "Proceed"
         #else:
             #print "Please enter Yes or No"
-        #print list.append(room_Gridsystem())
-        room = raw_input("Please select one of the following room: ")
+        room_Gridsystem()
+        print
+        room = raw_input("Please select one of the rooms from the list above: ")
         if room in gridSystem.keys():
             if room == "Store":
                 store()
@@ -225,3 +232,4 @@ def action():
 
 
 
+action()
