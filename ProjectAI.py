@@ -2,13 +2,14 @@
 import sys
 import os
 import time
+from random import randint
 
 
 
-#starter
+
 
 #create your player
-class health:
+class Character:
     def __init__(self, name):
         self.health = 100
         self.name = name
@@ -18,9 +19,23 @@ class health:
             quit("You've lost!")
 
 
+
+
+
+#Enemy
+class Enemy(Character):
+  def __init__(self, player):
+    Character.__init__(self)
+    self.name = 'some monster'
+    self.health = randint(1, player.health)
+
+
+
 #Global names
 global character
-character = health("")
+character = Character("")
+
+
 
 Items = {"Shield":1, "Sword":2, "Medicine":3, "Clothing":4}
 
@@ -37,18 +52,17 @@ i = {"Look":9000}
 
 
 gridSystem = {"Store":a,
-			"House":b,
-			"C":c,
-			"Cave":d,
-			"Five":e,
-			"Six": f,
-			"Seven":g,
-			"Eight":h,
-			"Nine":i}
+            "House":b,
+            "C":c,
+            "Cave":d,
+            "Five":e,
+            "Six": f,
+            "Seven":g,
+            "Eight":h,
+            "Nine":i}
 
-print gridSystem.get("Store").get("Buy Food")
-
-
+def helper():
+  print "THIS AND THAT AND DO THIS AND THAT MENU SOMETHING"
 
 #print rooms in gridsystem
 def room_Gridsystem():
@@ -58,7 +72,13 @@ def room_Gridsystem():
 
 #view list of actions in a room
 def view_Actions(dictionary):
-    print list(gridSystem.get(dictionary))
+    return list(gridSystem.get(dictionary))
+
+
+def view_ActionsinActions(dictionary, dictionary2):
+    return list(gridSystem.get(dictionary).get(dictionary2))
+
+print view_ActionsinActions("Store", "Buy Food")
 
 
 #exit game with timer
@@ -160,6 +180,7 @@ def cave():
 
 
 
+
 #Play the game
 def playGame():
     x = True
@@ -174,17 +195,10 @@ def playGame():
             x = False
         #change
         elif sure == "No" or sure == "no":
-            restart()
+            playGame()
         else:
             print "Please enter yes or no"
-    while True:
-        answer = raw_input("Hello " + character.name + ". Would you like to check your health before proceeding? " )
-        if answer == "Yes" or answer == "yes":
-            print "Your current health is", character.health
-        elif answer == "No" or answer == "no":
-            print "Proceed"
-        #else:
-            #print "Please enter Yes or No"
+
         room_Gridsystem()
         print
         room = raw_input("Please select one of the rooms from the list above: ")
@@ -192,12 +206,22 @@ def playGame():
             if room == "Store":
                 store()
                 print("Here is a list of actions you may select in " + room)
-                view_Actions("Store")
+                print view_Actions("Store")
                 action = raw_input("Select an action from the list above ")
                 if action in gridSystem[room]:
-                    print ("You have selected to " + actiontoString([action]))
-                    print gridSystem[room][action]
-                    break
+                    if 'Clothing' in view_ActionsinActions("Store", "Buy Food"):
+                        print view_ActionsinActions("Store", "Buy Food")
+                        select = raw_input( "Select something from the list above to buy: ")
+                        if select == "Sword":
+                            print "You have selected to buy a sword"
+                        elif select == "Medicine":
+                            print "you have selected to buy medicine"
+
+
+                    else:
+                        print ("You have selected to " + actiontoString([action]))
+                        print gridSystem[room][action]
+                        break
 
                 else:
                     print "Not an action"
@@ -211,7 +235,7 @@ def playGame():
             elif room == "House":
                 house()
                 print("Here is a list of actions you may select in " + room)
-                view_Actions("House")
+                print view_Actions("House")
                 action = raw_input("Select an action from the list above ")
                 if action in gridSystem[room]:
                     print ("You have selected to " + actiontoString([action]))
@@ -229,7 +253,7 @@ def playGame():
             elif room == "C":
                 cdictionary()
                 print("Here is a list of actions you may select in " + room)
-                view_Actions("C")
+                print view_Actions("C")
                 action = raw_input("Select an action from the list above ")
                 if action in gridSystem[room]:
                     print ("You have selected to " + actiontoString([action]))
@@ -249,12 +273,16 @@ def playGame():
             elif room == "Cave":
                 cave()
                 print("Here is a list of actions you may select in " + room)
-                view_Actions("Cave")
+                print view_Actions("Cave")
                 action = raw_input("Select an action from the list above ")
                 if action in gridSystem[room]:
-                    print ("You have selected to " + actiontoString([action]))
-                    print gridSystem[room][action]
-                    break
+                    if "Fight" in view_Actions("Cave"):
+                        print "There is no one to fight.....yet"
+                        break
+                    else:
+                        print ("You have selected to " + actiontoString([action]))
+                        print gridSystem[room][action]
+                        break
 
 
                 else:
