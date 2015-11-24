@@ -1,4 +1,9 @@
 
+"""
+Jamel Hamani
+Patrick
+"""
+
 import sys
 import os
 import time
