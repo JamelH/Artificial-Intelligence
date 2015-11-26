@@ -137,6 +137,12 @@ def randomActionsHouse():
     return random_item
 
 
+#random action for treasure hunting
+def randomActionCave():
+    actions = ["discovery", "no discovery"]
+    random_action = random.choice(actions)
+    return random_action
+
 
 #If user selects store
 def store():
@@ -205,6 +211,8 @@ def cave():
                 elif answer == "No" or answer == "no":
                     print("Ok")
                     break
+                elif answer == "quit" or answer == "Quit":
+                    quit()
                 else:
                     print("Please enter Yes or No")
 
@@ -401,10 +409,10 @@ def playGame():
                 while True:
                     print("Here is a list of actions you may select in " + room)
                     print
-                    print view_Actions("house")
-                    print
-                    action = raw_input("Select an action from the list above ").strip()
                     while True:
+                        print view_Actions("house")
+                        print
+                        action = raw_input("Select an action from the list above ").strip()
                         if action == "look":
                             print str(character.name) + " is looking around the " + str(room)
                             print
@@ -459,7 +467,7 @@ def playGame():
                                 print "Please type yes or no"
 
                         else:
-                            quit()
+                            print "Not an action"
             elif room == "C":
                 cdictionary()
                 print("Here is a list of actions you may select in " + room)
@@ -472,21 +480,25 @@ def playGame():
                     break
 
                 else:
-                    quit()
+                    print "Not an action"
             elif room == "cave":
                 cave()
                 print "You enter the dark cave out of curioisty"
                 print
+                print("Here is a list of actions you may select in " + room)
+                print
                 while True:
-                    print("Here is a list of actions you may select in " + room)
-                    print
                     print view_Actions("cave")
                     print
                     action = raw_input("Select an action from the list above ").strip()
+
+                  
+
                     if action in gridSystem[room]:
                         if "fight" == action:
                             print "There is no one to fight.....yet"
-                            break
+                            print
+
 
                         elif "look" == action:
                             print str(character.name) + " is looking around the cave. It is dark and " \
@@ -513,6 +525,7 @@ def playGame():
                             if not "stick" in character.inventory:
                                 print "You cant lit up a fire without a stick. Try finding a stick around the cave" \
                                       ". There must be one!!"
+                                print
 
                             else:
                                 print str(character.name) + " is feeling warm in this dark, cold cave"
@@ -535,14 +548,36 @@ def playGame():
                                     print
                                     print str(character.name) + " decides its not worth the risk and walks away"
                                     break
+                        elif "hunt for treasure" == action:
+                            print str(character.name) + " is looking around"
+                            while True:
+                                if randomActionCave() == "discovery":
+                                    print str(character.name) + " discovered a treausre box"
+                                    print
+                                    print str(character.name) + " opens up the box"
+                                    gold = randint(0,1000)
+                                    print "There is " + str(gold) + " in the treasure box!"
+                                    character.gold += gold
+                                    print str(character.name) + " is now " + str(gold) + " coins richer"
+                                    print
 
 
-
+                                    break
+                                elif randomActionCave() == "no discovery":
+                                    print str(character.name)  + " did not find any treasure"
+                                    break
 
 
 
                     else:
-                        quit()
+                        print "Not an action"
+                        print
+
+
+
+
+
+
 
 
 
