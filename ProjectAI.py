@@ -37,7 +37,6 @@ class Character:
 
 
 
-
 #Enemy
 class Enemy():
   def __init__(self):
@@ -73,7 +72,7 @@ Items = {"shield":1, "sword":2, "medicine":3, "clothing":4, "staff":5, "knife":6
 a = {"look":1, "buy food":Items, "buy armor": 3, "show inventory":4}
 b = {"look":2, "armor":3, "inventory":4}
 c = {"sleep":3}
-d = {"fight":4, "Do other stuff":5, "look":6, "hunt for treasure":7, "lit fire":8}
+d = {"fight":4, "explore the cave":5, "look":6, "hunt for treasure":7, "lit fire":8}
 e = {"look":5}
 f = {"look":6}
 g = {"look":7}
@@ -97,8 +96,9 @@ def help():
 
 #print rooms in gridsystem
 def room_Gridsystem():
-    for keys in gridSystem.keys():
-        print keys,
+    rooms = ["House", "C", "Eight", "Gate", "Store", "Cave", "Nine", "Gate", "Six"]
+    print  rooms
+
 
 
 #view list of actions in a room
@@ -193,6 +193,7 @@ def cdictionary():
 
 #if user selects c-dictionary
 def cave():
+    action = ""
     for key in gridSystem.keys():
         if key  == "Cave":
             while True:
@@ -218,18 +219,18 @@ def chooseYourCharacter():
     print "Pick a Class"
     print
     while True:
-        action = raw_input("Thief, Fighter, Mage ").strip()
+        action = raw_input("Thief, Fighter, Mage ").strip().lower()
         print
-        if action == "Thief":
+        if action == "thief":
             character.job = action
             character.inventory.append("knife")
             break
-        if action == "Fighter":
+        if action == "fighter":
             character.job = action
             character.gold += 50
             character.inventory.append("sword")
             break
-        if action == "Mage":
+        if action == "mage":
             character.job = action
             character.gold += 150
             character.inventory.append("staff")
@@ -472,21 +473,77 @@ def playGame():
 
                 else:
                     quit()
-
             elif room == "cave":
                 cave()
-                print("Here is a list of actions you may select in " + room)
+                print "You enter the dark cave out of curioisty"
                 print
-                print view_Actions("cave")
-                print
-                action = raw_input("Select an action from the list above ").strip()
-                if action in gridSystem[room]:
-                    if "fight" in view_Actions("cave"):
-                        print "There is no one to fight.....yet"
+                while True:
+                    print("Here is a list of actions you may select in " + room)
+                    print
+                    print view_Actions("cave")
+                    print
+                    action = raw_input("Select an action from the list above ").strip()
+                    if action in gridSystem[room]:
+                        if "fight" == action:
+                            print "There is no one to fight.....yet"
+                            break
+
+                        elif "look" == action:
+                            print str(character.name) + " is looking around the cave. It is dark and " \
+                                                        "you can only make out a small stick on the floor."
+                            print
+                            while True:
+                                pickStick = raw_input("Pick up the stick and add to inventory? Might be useful to "
+                                                      "light up a fire! ").lower().strip()
+                                if pickStick == "yes":
+                                    character.inventory.append("stick")
+                                    print str(character.name) + " added a stick to his inventory"
+                                    print
+                                    print str(character.name) + "'s current inventory " + str(character.lookAtInventory())
+                                    break
+                                elif pickStick == "no":
+                                    print str(character.name) + " did not pick up the stick"
+                                    break
+                                else:
+                                    print "Type yes or no"
+
+
+
+                        elif "lit fire" == action:
+                            if not "stick" in character.inventory:
+                                print "You cant lit up a fire without a stick. Try finding a stick around the cave" \
+                                      ". There must be one!!"
+
+                            else:
+                                print str(character.name) + " is feeling warm in this dark, cold cave"
+                                character.health += 100
+                                print
+                                print str(character.name) + " health is now " + str(character.health)
+
+                        elif "explore the cave" == action:
+                            while True:
+                                print "There seems to be someone near the lake"
+                                print
+                                walkTowards = raw_input("Walk towards the figure? ")
+                                if walkTowards == "yes":
+                                    print
+                                    print str(character.name) + " is walking towards the dark figure"
+                                    print
+                                    print "Its an enemy!"
+                                    #create list of attatcs here
+                                elif walkTowards == "no":
+                                    print
+                                    print str(character.name) + " decides its not worth the risk and walks away"
+                                    break
+
+
+
+
+
+
                     else:
-                        print ("You have selected to " + actiontoString([action]))
-                        print gridSystem[room][action]
-                        break
+                        quit()
+
 
 
                 else:
@@ -494,6 +551,5 @@ def playGame():
         else:
             raw_input("Not in the gridsystem. Press enter to try again").strip()
             print
-
 
 playGame()
