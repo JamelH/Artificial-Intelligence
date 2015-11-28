@@ -12,7 +12,7 @@ import random
 import string
 
 
-#create function to go to a room
+#create function to go from one room to another
 
 
 
@@ -25,8 +25,6 @@ class Character:
         self.inventory = []
         self.gold = 0
         self.job = ""
-
-
     def minus_health(self):
         self.health = self.health - 2
         if self.health <= 0:
@@ -66,10 +64,10 @@ character = Character("")
 
 
 
-Items = {"shield":1, "sword":2, "medicine":3, "clothing":4, "staff":5, "knife":6}
+Items = {"shield":1, "sword":2, "medicine":3, "clothing":4, "staff":5, "knife":6, "food":7}
 
 
-a = {"look":1, "buy food":Items, "buy armor": 3, "show inventory":4}
+a = {"look":1, "buy items":Items, "buy armor": 3, "show inventory":4}
 b = {"look":2, "armor":3, "inventory":4}
 c = {"sleep":3}
 d = {"fight":4, "explore the cave":5, "look":6, "hunt for treasure":7, "lit fire":8}
@@ -132,7 +130,7 @@ def actiontoString(actions):
 
 #creates a random action you might encounter in the House grid
 def randomActionsHouse():
-    digits = [ "burglar", "scripture", "treasure"]
+    digits = [ "burglar", "scripture", "treasure", "nothing"]
     random_item = random.choice(digits)
     return random_item
 
@@ -266,13 +264,13 @@ def showInventory():
 def procceedtoAdventure():
     myList = ["Show Inventory", "Choose a character", "Procceed"]
     while True:
-        procceed = raw_input("Would you like to proceed? ").strip()
+        procceed = raw_input("Would you like to proceed? ").strip().lower()
         print
         if procceed == "yes":
             break
         elif procceed == "no":
             while True:
-                goBack= raw_input("Where would you like to go back? ").strip()
+                goBack= raw_input("Where would you like to go back? ").strip().lower()
                 if goBack == "Show Inventory":
                     showInventory()
                     break
@@ -381,13 +379,37 @@ def playGame():
                             print
                             break
 
-                        if "buy food" == action:
-                            print view_ActionsinActions("store", "buy food")
+                        if "buy items" == action:
+                            print view_ActionsinActions("store", "buy items")
                             select = raw_input( "Select something from the list above to buy: ").strip()
                             print
 
                             if select == "sword":
-                                 print "You have selected to buy a sword"
+                                 print "sword costs 500 coins"
+                                 while True:
+
+                                     buy = raw_input("Buy? ").strip().lower()
+                                     if buy =="yes":
+                                         if character.gold >= 500:
+                                             character.gold - 500
+                                             print str(character.name) + " bought the " + select
+                                             print
+                                             print character.inventory.append(select)
+                                             print
+                                             print character.gold
+                                             break
+                                         else:
+                                            print "You don't have enough gold to buy this item"
+                                            break
+
+                                     elif buy == "no":
+                                         print "Ok"
+                                         break
+                                     else:
+                                         print "Please type buy or don't buy"
+
+
+
                             elif select == "medicine":
                                 print "you have selected to buy medicine"
                                 character.inventory.append("medicine")
@@ -421,7 +443,7 @@ def playGame():
                                 print
                                 print "Take action?, Run Away?"
                                 while True:
-                                    take_action = raw_input("What are you going to do? ").strip()
+                                    take_action = raw_input("What are you going to do? ").strip().lower()
                                     if take_action == "Run Away":
                                         print "You got away safely"
                                         break
@@ -447,13 +469,12 @@ def playGame():
                             elif randomActionsHouse() == "scripture":
                                 print "There is a weird scripture drawn on the wall of your house"
                                 print
-                                print "The scripture reads: You must enter the cave to meat the omega"
+                                print "The scripture reads: You must enter the cave to something something"
                                 print
                                 break
-                            else:
+                            elif randomActionsHouse() == "nothing":
                                 print("Looks like nothing caught the attention of ") + str(character.name)
-
-                            break
+                                break
 
                         elif action == "inventory":
                             check_inventory = raw_input("Would you like to check your current inventory? ")
@@ -492,7 +513,7 @@ def playGame():
                     print
                     action = raw_input("Select an action from the list above ").strip()
 
-                  
+
 
                     if action in gridSystem[room]:
                         if "fight" == action:
